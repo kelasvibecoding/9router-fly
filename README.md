@@ -65,13 +65,29 @@ fly deploy -a <app-name>
 ```
 
 #### Option B: CI Deployment (GitHub Actions)
-This repository includes a workflow for automatic deployment. To use it, you must add a repository secret:
+This repository includes a workflow for automatic deployment. To use it, first create a Fly API token (CLI or Dashboard), then add it as a repository secret.
 
-1. **Get your Fly Token:**
+1. **Method A (CLI — Deploy Token, Recommended for CI/CD):**
+   A deploy token is scoped only to a specific app, making it safer for CI/CD use.
+   Run this inside your project directory (run `fly auth login` first if you are not authenticated):
+   ```bash
+   fly tokens create deploy -a <app-name>
+   ```
+   Copy the token that is printed in the terminal.
+
+2. **Method B (CLI — Personal Access Token):**
+   This token has full access to your Fly.io account. Use this if you need broader access.
    ```bash
    fly auth token
    ```
-2. **Add to GitHub Secrets:**
+
+3. **Method C (Fly.io Dashboard): Generate your Fly token from web UI**
+   - Open `https://fly.io/dashboard` and sign in.
+   - Go to **Account** → **Access Tokens**.
+   - Click **Create Access Token**.
+   - Give it a name (example: `github-actions`) and copy the token.
+
+4. **Add to GitHub Secrets:**
    - Go to your repo on GitHub → **Settings** → **Secrets and variables** → **Actions**.
    - Click **New repository secret**.
    - Name: `FLY_API_TOKEN`
