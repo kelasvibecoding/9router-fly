@@ -1,4 +1,4 @@
-app = "diyrouter"
+app = "viberouter"
 primary_region = "sin"
 
 [build]
@@ -8,7 +8,7 @@ primary_region = "sin"
   PORT = "20128"
   HOSTNAME = "0.0.0.0"
   HOME = "/data"
-  NEXT_PUBLIC_BASE_URL = "https://diyrouter.fly.dev"
+  NEXT_PUBLIC_BASE_URL = "https://viberouter.fly.dev"
 
 [http_service]
   internal_port = 20128
