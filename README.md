@@ -31,63 +31,67 @@ fly auth login
 
 ---
 
-## 1) Configure app name
+## Deployment Instructions
 
+Follow these steps to get your 9router up and running on Fly.io.
+
+### 1. Initial Setup (One-time)
+
+#### A) Configure App Name
 Edit `fly.toml`:
+- Change `app = "diyrouter"` to your own app name.
+- Update `NEXT_PUBLIC_BASE_URL` to match your app URL (e.g., `https://your-app-name.fly.dev`).
 
-- Change `app = "diyrouter"` to your own app name
-- Update `NEXT_PUBLIC_BASE_URL` to match your app URL (for example `https://your-app-name.fly.dev`)
-
----
-
-## 2) Create Fly app
-
-You can create an app explicitly:
-
+#### B) Create Fly App
 ```bash
 fly apps create <app-name>
 ```
 
-Or let Fly create one during first deploy (explicit create is recommended for predictable naming).
-
----
-
-## 3) Create persistent volume (required)
-
+#### C) Create Persistent Volume (Required)
 Create a volume named `data` in the same region as your app (example: `sin`):
-
 ```bash
 fly volumes create data --region sin --size 1 --app <app-name>
 ```
-
-Notes:
-
-- Volume name should match `source = "data"` in `fly.toml`
-- Increase `--size` if you need more storage
+*Note: Volume name must match the mount source in `fly.toml`.*
 
 ---
 
-## 4) Deploy
+### 2. Choose Deployment Method
 
-From this repository root:
-
+#### Option A: Manual Deployment (Local machine)
+From the repository root, run:
 ```bash
 fly deploy -a <app-name>
 ```
 
+#### Option B: CI Deployment (GitHub Actions)
+This repository includes a workflow for automatic deployment. To use it, you must add a repository secret:
+
+1. **Get your Fly Token:**
+   ```bash
+   fly auth token
+   ```
+2. **Add to GitHub Secrets:**
+   - Go to your repo on GitHub → **Settings** → **Secrets and variables** → **Actions**.
+   - Click **New repository secret**.
+   - Name: `FLY_API_TOKEN`
+   - Value: (Paste your token).
+
+Once saved, any push to the `main` branch will trigger an automatic deploy.
+
 ---
 
-## 5) Verify deployment
+### 3. Verify & Open
 
+Check your app status:
 ```bash
 fly status -a <app-name>
 fly logs -a <app-name>
 ```
 
-Open in browser:
-
-- Dashboard: `https://<app-name>.fly.dev/dashboard`
-- API base: `https://<app-name>.fly.dev/v1`
+Open in your browser:
+- **Dashboard:** `https://<app-name>.fly.dev/dashboard`
+- **API Base:** `https://<app-name>.fly.dev/v1`
 
 ---
 
